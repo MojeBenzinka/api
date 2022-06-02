@@ -1,0 +1,29 @@
+scalar Date
+
+type Query {
+  stations: [Station]
+}
+
+type Station {
+  id: ID!
+  lat: Float!
+  lon: Float!
+  company: Company
+  prices: [Price]
+  currentPrice: Price
+}
+
+type Company {
+  id: ID!
+  name: String!
+  logo_img: String!
+  stations: [Station]
+}
+
+type Price {
+  id: ID!
+  station_id: ID!
+  start_date: Date!
+  end_date: Date!
+  price: Float!
+}
