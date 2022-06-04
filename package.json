@@ -5,6 +5,9 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "yarn": "1.22.5"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
