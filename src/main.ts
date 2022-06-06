@@ -7,6 +7,7 @@ const desc = `
   The Palivo API description<br/>
   <ul>
     <li><a href='/graphql' target="_blank" rel="noreferer noopener">GraphQL</a></li>
+    <li><a href='https://studio.apollographql.com/sandbox/explorer?endpoint=https%3A%2F%2Fapi.kdenatankuju.cz%2Fgraphql' target="_blank" rel="noreferer noopener">GraphQL Sandbox</a></li>
   </ul>
 </div>
 `;
