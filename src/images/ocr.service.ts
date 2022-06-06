@@ -1,9 +1,7 @@
 import {
-  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
-  NotFoundException,
 } from "@nestjs/common";
 import * as tesseract from "node-tesseract-ocr";
 

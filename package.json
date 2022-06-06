@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "engines": {
-    "yarn": "1.22.5"
+    "yarn": "1.22.x"
   },
   "scripts": {
     "prebuild": "rimraf dist",

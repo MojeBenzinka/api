@@ -1,6 +1,4 @@
 import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { GraphQLModule } from "@nestjs/graphql";
@@ -19,11 +17,12 @@ import { OcrModule } from "./images/ocr.module";
       ssl: {
         rejectUnauthorized: false,
       },
-      host: process.env.DATABASE_HOST,
-      port: 5432,
-      username: process.env.DATABASE_USER,
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
+      url: process.env.DATABASE_URL,
+      // host: process.env.DATABASE_HOST,
+      // port: 5432,
+      // username: process.env.DATABASE_USER,
+      // password: process.env.DATABASE_PASSWORD,
+      // database: process.env.DATABASE_NAME,
       entities: [PetrolCompany, PetrolSuperType, PetrolStation],
       //synchronize: true,
     }),
@@ -34,7 +33,7 @@ import { OcrModule } from "./images/ocr.module";
       // definitions: {
       //   path: join(process.cwd(), "src/graphql/graphql.ts"),
       // },
-      // playground: true,
+      playground: true,
       introspection: true,
       // installSubscriptionHandlers: true,
       // subscriptions: {
