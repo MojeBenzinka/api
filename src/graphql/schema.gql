@@ -2,28 +2,45 @@ scalar Date
 
 type Query {
   stations: [Station]
+  station(id: ID!): Station
+  companies: [Company]
 }
 
 type Station {
   id: ID!
   lat: Float!
   lon: Float!
-  company: Company
+  company: Company!
   prices: [Price]
-  currentPrice: Price
+  latestPrice: [Price]
 }
 
 type Company {
   id: ID!
   name: String!
   logo_img: String!
+  imgUrl: String!
   stations: [Station]
 }
 
 type Price {
   id: ID!
-  station_id: ID!
-  start_date: Date!
-  end_date: Date!
+  createdAt: Date!
+  updatedAt: Date!
+  currency: String!
   price: Float!
+  type: PetrolType
+}
+
+type PetrolType {
+  id: ID!
+  name: String!
+  description: String
+  superType: PetrolSuperType
+}
+
+type PetrolSuperType {
+  id: ID!
+  name: String!
+  cat: String!
 }

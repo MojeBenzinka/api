@@ -8,6 +8,9 @@ import { PetrolStation } from "./db/petrolStation";
 import { PetrolSuperType } from "./db/petrolSuperType";
 import { GQLModule } from "./graphql/GQL.module";
 import { OcrModule } from "./images/ocr.module";
+import { ComplexityPlugin } from "./graphql/plugins/Complexity.plugin";
+import { Price } from "./db/petrolPrice";
+import { PetrolType } from "./db/petrolType";
 
 @Module({
   imports: [
@@ -23,13 +26,21 @@ import { OcrModule } from "./images/ocr.module";
       // username: process.env.DATABASE_USER,
       // password: process.env.DATABASE_PASSWORD,
       // database: process.env.DATABASE_NAME,
-      entities: [PetrolCompany, PetrolSuperType, PetrolStation],
+      entities: [
+        PetrolCompany,
+        PetrolSuperType,
+        PetrolStation,
+        Price,
+        PetrolType,
+      ],
       //synchronize: true,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      // autoSchemaFile: true,
       debug: false,
       typePaths: ["./**/*.gql"],
+
       // definitions: {
       //   path: join(process.cwd(), "src/graphql/graphql.ts"),
       // },

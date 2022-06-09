@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { PetrolCompany } from "./petrolCompany";
+import { Price } from "./petrolPrice";
 
 @Entity("petrol_stations")
 export class PetrolStation {
@@ -31,4 +32,7 @@ export class PetrolStation {
   })
   @JoinColumn([{ name: "company_id", referencedColumnName: "id" }])
   company: PetrolCompany;
+
+  @OneToMany(() => Price, (price) => price.stationId)
+  prices: Price[];
 }
