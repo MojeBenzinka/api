@@ -8,7 +8,6 @@ import { PetrolStation } from "./db/petrolStation";
 import { PetrolSuperType } from "./db/petrolSuperType";
 import { GQLModule } from "./graphql/GQL.module";
 import { OcrModule } from "./images/ocr.module";
-import { ComplexityPlugin } from "./graphql/plugins/Complexity.plugin";
 import { Price } from "./db/petrolPrice";
 import { PetrolType } from "./db/petrolType";
 
