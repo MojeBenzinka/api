@@ -20,7 +20,7 @@ export class CompanyResolver {
 
   @Query("companies")
   async companies(): Promise<PetrolCompany[]> {
-    return await this.companyRepo.find();
+    return await this.companyRepo.find({ order: { name: "ASC" } });
   }
 
   @ResolveField("imgUrl")
