@@ -4,7 +4,7 @@ import { InjectEntityManager, InjectRepository } from "@nestjs/typeorm";
 import { PetrolCompany } from "src/db/petrolCompany";
 import { Price } from "src/db/petrolPrice";
 import { PetrolStation } from "src/db/petrolStation";
-import { EntityManager, Repository, MoreThan, In } from "typeorm";
+import { EntityManager, Repository, MoreThan, In, Between } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
 @Resolver("Station")
@@ -30,6 +30,30 @@ export class StationsResolver {
     );
   }
 
+  private findBounds(
+    lat: number,
+    lon: number,
+    zoom: number,
+  ): [number, number, number, number] {
+    // czech republic center
+    const centerLat = 49.81759;
+    const centerLon = 15.4728;
+
+    const latDiff = (lat - centerLat) / zoom;
+    const lonDiff = (lon - centerLon) / zoom;
+
+    const latMin = lat - latDiff;
+    const latMax = lat + latDiff;
+    const lonMin = lon - lonDiff;
+    const lonMax = lon + lonDiff;
+
+    this.logger.log(
+      `lat: ${lat}, lon: ${lon}, zoom: ${zoom}, latDiff: ${latDiff}, lonDiff: ${lonDiff}, latMin: ${latMin}, latMax: ${latMax}, lonMin: ${lonMin}, lonMax: ${lonMax}`,
+    );
+
+    return [latMin, latMax, lonMin, lonMax];
+  }
+
   @ResolveField("company")
   async place(@Parent() station: PetrolStation) {
     const cId = station.companyId;
@@ -40,14 +64,33 @@ export class StationsResolver {
   @Query("stations")
   async stations(
     @Args("companyIds") companyIds?: string[],
+    @Args("north") north?: number,
+    @Args("south") south?: number,
+    @Args("east") east?: number,
+    @Args("west") west?: number,
   ): Promise<PetrolStation[]> {
+    let bounds = {};
+    // if (lat && lon && zoom) {
+    //   const [latMin, latMax, lonMin, lonMax] = this.findBounds(lat, lon, zoom);
+    //   bounds = { lat: Between(latMin, latMax), lon: Between(lonMin, lonMax) };
+    // }
+
+    if (north && south && east && west) {
+      bounds = {
+        lat: Between(south, north),
+        lon: Between(west, east),
+      };
+    }
+
     let stations = [];
     if (companyIds && companyIds.length > 0) {
       stations = await this.stationsRepo.find({
-        where: { companyId: In(companyIds) },
+        where: { companyId: In(companyIds), ...bounds },
       });
     } else {
-      stations = await this.stationsRepo.find();
+      stations = await this.stationsRepo.find({
+        where: bounds,
+      });
     }
 
     return stations;
@@ -65,7 +108,7 @@ export class StationsResolver {
     // find latest price for each petrol type
     const prices = await this.pricesRepo.find({
       where: { stationId: pId },
-      order: { createdAt: "DESC" },
+      order: { updatedAt: "DESC" },
     });
 
     return prices;
