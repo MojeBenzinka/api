@@ -86,10 +86,12 @@ export class StationsResolver {
     if (companyIds && companyIds.length > 0) {
       stations = await this.stationsRepo.find({
         where: { companyId: In(companyIds), ...bounds },
+        cache: true,
       });
     } else {
       stations = await this.stationsRepo.find({
         where: bounds,
+        cache: true,
       });
     }
 

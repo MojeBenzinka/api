@@ -33,6 +33,7 @@
     "@nestjs/swagger": "^5.2.1",
     "@nestjs/typeorm": "^8.1.0",
     "apollo-server-express": "^3.8.1",
+    "apollo-server-plugin-response-cache": "^3.6.0",
     "graphql": "^16.5.0",
     "graphql-query-complexity": "^0.11.0",
     "node-tesseract-ocr": "^2.2.1",

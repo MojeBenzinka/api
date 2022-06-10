@@ -10,6 +10,8 @@ import { GQLModule } from "./graphql/GQL.module";
 import { OcrModule } from "./images/ocr.module";
 import { Price } from "./db/petrolPrice";
 import { PetrolType } from "./db/petrolType";
+import { ApolloServerPluginCacheControl } from "apollo-server-core/dist/plugin/cacheControl";
+import responseCachePlugin from "apollo-server-plugin-response-cache";
 
 @Module({
   imports: [
@@ -49,7 +51,10 @@ import { PetrolType } from "./db/petrolType";
       // subscriptions: {
       //   "graphql-ws": true,
       // },
-      plugins: [],
+      plugins: [
+        ApolloServerPluginCacheControl({ defaultMaxAge: 5 }), // optional
+        responseCachePlugin(),
+      ],
     }),
     GQLModule,
     OcrModule,
