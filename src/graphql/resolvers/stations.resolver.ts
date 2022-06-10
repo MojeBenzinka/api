@@ -67,7 +67,7 @@ export class StationsResolver {
 
     const prices = await this.pricesRepo.find({
       where: { stationId: station.id, createdAt: MoreThan(monthAgo) },
-      order: { createdAt: "DESC" },
+      order: { updatedAt: "DESC" },
     });
 
     const groupped: Price[][] = [];
@@ -100,7 +100,12 @@ export class StationsResolver {
         const latest = g.sort(
           (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime(),
         )[0];
-        g.push({ ...latest, updatedAt: today, createdAt: today });
+        g.push({
+          ...latest,
+          updatedAt: today,
+          createdAt: today,
+          id: undefined,
+        });
       }
     }
 
