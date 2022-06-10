@@ -12,6 +12,7 @@ type Station {
   lon: Float!
   company: Company!
   prices: [Price]
+  pricesHistory: [[Price]]
   latestPrice: [Price]
 }
 

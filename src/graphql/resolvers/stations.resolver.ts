@@ -4,7 +4,7 @@ import { InjectEntityManager, InjectRepository } from "@nestjs/typeorm";
 import { PetrolCompany } from "src/db/petrolCompany";
 import { Price } from "src/db/petrolPrice";
 import { PetrolStation } from "src/db/petrolStation";
-import { EntityManager, Repository } from "typeorm";
+import { EntityManager, Repository, MoreThan } from "typeorm";
 
 @Resolver("Station")
 export class StationsResolver {
@@ -20,6 +20,14 @@ export class StationsResolver {
     @InjectRepository(Price)
     private readonly pricesRepo: Repository<Price>,
   ) {}
+
+  private isSameDate(date1: Date, date2: Date): boolean {
+    return (
+      date1.getFullYear() == date2.getFullYear() &&
+      date1.getMonth() == date2.getMonth() &&
+      date1.getDate() == date2.getDate()
+    );
+  }
 
   @ResolveField("company")
   async place(@Parent() station: PetrolStation) {
@@ -49,6 +57,54 @@ export class StationsResolver {
     });
 
     return prices;
+  }
+
+  @ResolveField("pricesHistory")
+  async pricesHistory(@Parent() station: PetrolStation): Promise<Price[][]> {
+    // prices for last 2 months
+    const monthAgo = new Date();
+    monthAgo.setMonth(monthAgo.getMonth() - 2);
+
+    const prices = await this.pricesRepo.find({
+      where: { stationId: station.id, createdAt: MoreThan(monthAgo) },
+      order: { createdAt: "DESC" },
+    });
+
+    const groupped: Price[][] = [];
+
+    for (const price of prices) {
+      const existing = groupped.find((x) =>
+        x.some((y) => y.petrolTypeId == price.petrolTypeId),
+      );
+
+      if (existing) {
+        existing.push(price);
+        continue;
+      }
+
+      groupped.push([price]);
+    }
+
+    const today = new Date();
+
+    for (const g of groupped) {
+      if (g.length === 0) continue;
+
+      if (
+        !g.some(
+          (x) =>
+            this.isSameDate(x.createdAt, today) ||
+            this.isSameDate(x.updatedAt, today),
+        )
+      ) {
+        const latest = g.sort(
+          (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime(),
+        )[0];
+        g.push(latest);
+      }
+    }
+
+    return groupped;
   }
 
   @ResolveField("prices")
