@@ -1,7 +1,7 @@
 scalar Date
 
 type Query {
-  stations: [Station]
+  stations(companyIds: [String], lat: Float, lon: Float, zoom: Float): [Station]
   station(id: ID!): Station
   companies: [Company]
 }

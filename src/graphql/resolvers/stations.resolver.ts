@@ -4,7 +4,7 @@ import { InjectEntityManager, InjectRepository } from "@nestjs/typeorm";
 import { PetrolCompany } from "src/db/petrolCompany";
 import { Price } from "src/db/petrolPrice";
 import { PetrolStation } from "src/db/petrolStation";
-import { EntityManager, Repository, MoreThan } from "typeorm";
+import { EntityManager, Repository, MoreThan, In } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
 @Resolver("Station")
@@ -38,8 +38,19 @@ export class StationsResolver {
   }
 
   @Query("stations")
-  async stations(): Promise<PetrolStation[]> {
-    return await this.stationsRepo.find();
+  async stations(
+    @Args("companyIds") companyIds?: string[],
+  ): Promise<PetrolStation[]> {
+    let stations = [];
+    if (companyIds && companyIds.length > 0) {
+      stations = await this.stationsRepo.find({
+        where: { companyId: In(companyIds) },
+      });
+    } else {
+      stations = await this.stationsRepo.find();
+    }
+
+    return stations;
   }
 
   @Query("station")
