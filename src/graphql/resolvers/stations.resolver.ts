@@ -100,7 +100,7 @@ export class StationsResolver {
         const latest = g.sort(
           (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime(),
         )[0];
-        g.push(latest);
+        g.push({ ...latest, updatedAt: today, createdAt: today });
       }
     }
 
