@@ -5,6 +5,7 @@ import { PetrolCompany } from "src/db/petrolCompany";
 import { Price } from "src/db/petrolPrice";
 import { PetrolStation } from "src/db/petrolStation";
 import { EntityManager, Repository, MoreThan } from "typeorm";
+import { v4 as uuidv4 } from "uuid";
 
 @Resolver("Station")
 export class StationsResolver {
@@ -104,7 +105,7 @@ export class StationsResolver {
           ...latest,
           updatedAt: today,
           createdAt: today,
-          id: undefined,
+          id: uuidv4(),
         });
       }
     }
