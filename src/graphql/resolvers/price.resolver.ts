@@ -70,6 +70,19 @@ export class PriceResolver {
         return true;
       }
 
+      if (latest) {
+        // set updatedAt to yesterday at 23:59:59
+        latest.updatedAt = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate() - 1,
+          23,
+          59,
+          59,
+        );
+        await this.pricesRepo.save(latest);
+      }
+
       const newPrice = new Price();
       newPrice.stationId = id;
       newPrice.petrolTypeId = typeId;

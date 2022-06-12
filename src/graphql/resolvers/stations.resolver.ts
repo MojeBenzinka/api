@@ -155,6 +155,11 @@ export class StationsResolver {
     }
 
     const today = new Date();
+    // set to 4 am
+    today.setHours(4);
+    today.setMinutes(0);
+    today.setSeconds(0);
+    today.setMilliseconds(0);
 
     for (const g of groupped) {
       if (g.length === 0) continue;
