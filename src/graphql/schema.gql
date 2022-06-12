@@ -7,10 +7,10 @@ type Query {
     south: Float
     east: Float
     west: Float
-  ): [Station]
-  station(id: ID!): Station
-  companies: [Company]
-  petrolTypes: [PetrolType]
+  ): [Station!]
+  station(id: ID!): Station!
+  companies: [Company!]
+  petrolTypes: [PetrolType!]
 }
 
 type Mutation {
@@ -22,9 +22,9 @@ type Station {
   lat: Float!
   lon: Float!
   company: Company!
-  prices: [Price]
-  petrolTypes: [PetrolType]
-  pricesHistory: [[Price]]
+  prices: [Price!]
+  petrolTypes: [PetrolType!]
+  pricesHistory: [[Price!]]
 }
 
 type Company {
@@ -32,7 +32,7 @@ type Company {
   name: String!
   logo_img: String!
   imgUrl: String!
-  stations: [Station]
+  stations: [Station!]
 }
 
 type Price {
@@ -41,14 +41,14 @@ type Price {
   updatedAt: Date!
   currency: String!
   price: Float!
-  type: PetrolType
+  type: PetrolType!
 }
 
 type PetrolType {
   id: ID!
   name: String!
   description: String
-  superType: PetrolSuperType
+  superType: PetrolSuperType!
 }
 
 type PetrolSuperType {

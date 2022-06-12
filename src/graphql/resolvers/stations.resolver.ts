@@ -106,19 +106,6 @@ export class StationsResolver {
     return await this.stationsRepo.findOneBy({ id });
   }
 
-  @ResolveField("latestPrice")
-  async price(@Parent() station: PetrolStation): Promise<Price[]> {
-    const pId = station.id;
-
-    // find latest price for each petrol type
-    const prices = await this.pricesRepo.find({
-      where: { stationId: pId },
-      order: { updatedAt: "DESC" },
-    });
-
-    return prices;
-  }
-
   @ResolveField("petrolTypes")
   async availableFuelTypes(
     @Parent() station: PetrolStation,
@@ -198,9 +185,9 @@ export class StationsResolver {
     description: "Returns current prices",
   })
   async prices(@Parent() station: PetrolStation): Promise<Price[]> {
-    // prices for last 2 months
+    // prices for last  month
     const monthAgo = new Date();
-    monthAgo.setMonth(monthAgo.getMonth() - 2);
+    monthAgo.setMonth(monthAgo.getMonth() - 1);
 
     let prices = await this.pricesRepo.find({
       where: { stationId: station.id, createdAt: MoreThan(monthAgo) },
