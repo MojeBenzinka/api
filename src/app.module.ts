@@ -18,6 +18,8 @@ import responseCachePlugin from "apollo-server-plugin-response-cache";
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: "postgres",
+      retryAttempts: 50,
+      retryDelay: 5000,
       ssl: {
         rejectUnauthorized: false,
       },

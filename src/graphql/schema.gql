@@ -10,6 +10,11 @@ type Query {
   ): [Station]
   station(id: ID!): Station
   companies: [Company]
+  petrolTypes: [PetrolType]
+}
+
+type Mutation {
+  updatePrice(stationId: ID!, petrolTypeId: ID!, price: Float): Boolean
 }
 
 type Station {
@@ -18,6 +23,7 @@ type Station {
   lon: Float!
   company: Company!
   prices: [Price]
+  petrolTypes: [PetrolType]
   pricesHistory: [[Price]]
   latestPrice: [Price]
 }

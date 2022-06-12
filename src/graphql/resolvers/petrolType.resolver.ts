@@ -34,4 +34,10 @@ export class PetrolTypeResolver {
     });
     return type;
   }
+
+  @Query("petrolTypes")
+  async petrolTypes(): Promise<PetrolType[]> {
+    const types = await this.petrolTypeRepo.find();
+    return types;
+  }
 }

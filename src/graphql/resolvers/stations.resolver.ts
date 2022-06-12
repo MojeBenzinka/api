@@ -4,6 +4,7 @@ import { InjectEntityManager, InjectRepository } from "@nestjs/typeorm";
 import { PetrolCompany } from "src/db/petrolCompany";
 import { Price } from "src/db/petrolPrice";
 import { PetrolStation } from "src/db/petrolStation";
+import { PetrolType } from "src/db/petrolType";
 import { EntityManager, Repository, MoreThan, In, Between } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
@@ -20,6 +21,8 @@ export class StationsResolver {
     private readonly companyRepo: Repository<PetrolCompany>,
     @InjectRepository(Price)
     private readonly pricesRepo: Repository<Price>,
+    @InjectRepository(PetrolType)
+    private readonly petrolTypeRepo: Repository<PetrolType>,
   ) {}
 
   private isSameDate(date1: Date, date2: Date): boolean {
@@ -114,6 +117,26 @@ export class StationsResolver {
     });
 
     return prices;
+  }
+
+  @ResolveField("petrolTypes")
+  async availableFuelTypes(
+    @Parent() station: PetrolStation,
+  ): Promise<PetrolType[]> {
+    const pId = station.id;
+
+    const prices = await this.pricesRepo
+      .createQueryBuilder("price")
+      .where({ stationId: pId })
+      .select("price.petrolTypeId")
+      .distinct(true)
+      .leftJoinAndSelect("price.petrolType", "petrolType")
+      .distinctOn(["petrolType.id"])
+      .getMany();
+
+    const types = prices.map((x) => x.petrolType);
+
+    return types;
   }
 
   @ResolveField("pricesHistory")
