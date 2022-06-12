@@ -139,7 +139,9 @@ export class StationsResolver {
     return types;
   }
 
-  @ResolveField("pricesHistory")
+  @ResolveField("pricesHistory", () => [Price], {
+    description: "Returns prices history for last 2 months",
+  })
   async pricesHistory(@Parent() station: PetrolStation): Promise<Price[][]> {
     // prices for last 2 months
     const monthAgo = new Date();
@@ -192,15 +194,30 @@ export class StationsResolver {
     return groupped;
   }
 
-  @ResolveField("prices")
+  @ResolveField("prices", () => [Price], {
+    description: "Returns current prices",
+  })
   async prices(@Parent() station: PetrolStation): Promise<Price[]> {
-    // select last 10 price updates for station
+    // prices for last 2 months
+    const monthAgo = new Date();
+    monthAgo.setMonth(monthAgo.getMonth() - 2);
 
-    const prices = await this.pricesRepo.find({
-      where: { stationId: station.id },
+    let prices = await this.pricesRepo.find({
+      where: { stationId: station.id, createdAt: MoreThan(monthAgo) },
       order: { updatedAt: "DESC" },
-      take: 10,
     });
-    return prices ?? [];
+
+    const distinctPrices: Price[] = [];
+
+    for (const price of prices) {
+      if (distinctPrices.some((x) => x.petrolTypeId == price.petrolTypeId))
+        continue;
+
+      distinctPrices.push(price);
+
+      prices = prices.filter((x) => x.petrolTypeId != price.petrolTypeId);
+    }
+
+    return distinctPrices;
   }
 }

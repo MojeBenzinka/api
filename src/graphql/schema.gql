@@ -25,7 +25,6 @@ type Station {
   prices: [Price]
   petrolTypes: [PetrolType]
   pricesHistory: [[Price]]
-  latestPrice: [Price]
 }
 
 type Company {
