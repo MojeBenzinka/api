@@ -62,7 +62,7 @@ export class PriceResolver {
         order: { updatedAt: "DESC" },
       });
 
-      if (latest && this.isSameDay(latest.updatedAt, now)) {
+      if (latest && latest.price == price) {
         // update
         latest.price = price;
         latest.updatedAt = now;
