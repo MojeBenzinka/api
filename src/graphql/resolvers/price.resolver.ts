@@ -49,7 +49,7 @@ export class PriceResolver {
 
   @Mutation("updatePrice")
   async updatePrice(
-    @Args("id") id: string,
+    @Args("stationId") id: string,
     @Args("petrolTypeId") typeId: string,
     @Args("price") price: number,
   ): Promise<boolean> {
