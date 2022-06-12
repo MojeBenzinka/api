@@ -14,7 +14,7 @@ type Query {
 }
 
 type Mutation {
-  updatePrice(stationId: ID!, petrolTypeId: ID!, price: Float): Boolean
+  updatePrice(stationId: ID!, petrolTypeId: ID!, price: Float!): Boolean
 }
 
 type Station {

@@ -12,6 +12,7 @@ import { Price } from "./db/petrolPrice";
 import { PetrolType } from "./db/petrolType";
 import { ApolloServerPluginCacheControl } from "apollo-server-core/dist/plugin/cacheControl";
 import responseCachePlugin from "apollo-server-plugin-response-cache";
+import { UtilsModule } from "./utils/utils.module";
 
 @Module({
   imports: [
@@ -59,7 +60,8 @@ import responseCachePlugin from "apollo-server-plugin-response-cache";
       ],
     }),
     GQLModule,
-    OcrModule,
+    // OcrModule,
+    UtilsModule,
   ],
   // controllers: [AppController],
   // providers: [AppService],
