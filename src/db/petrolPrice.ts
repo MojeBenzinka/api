@@ -1,11 +1,13 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
+  UpdateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { PetrolCompany } from "./petrolCompany";
@@ -36,9 +38,11 @@ export class Price {
   station: PetrolStation;
 
   @Column("timestamptz", { name: "created_at" })
+  // @CreateDateColumn()
   createdAt: Date;
 
   @Column("timestamptz", { name: "updated_at" })
+  // @UpdateDateColumn()
   updatedAt: Date;
 
   @Column("uuid", { name: "petrol_type_id" })
@@ -52,8 +56,34 @@ export class Price {
   petrolType: PetrolType;
 
   @Column("date", { name: "valid_from" })
-  validFrom: Date;
+  validFromStr: string;
 
   @Column("date", { name: "valid_to", nullable: true })
-  validTo?: Date;
+  validToStr?: string;
+
+  // // getter validFrom
+  // get validFrom(): Date {
+  //   return new Date(this.validFromStr);
+  // }
+
+  // set validFrom(value: Date) {
+  //   // set YYYY-MM-DD
+  //   this.validFromStr = value.toISOString().split("T")[0];
+  // }
+
+  // // setter
+  // set validTo(value: Date | null) {
+  //   if (!value) {
+  //     this.validToStr = null;
+  //   } else {
+  //     // set YYYY-MM-DD
+  //     this.validToStr = value.toISOString().split("T")[0];
+  //   }
+  // }
+
+  // // getter validToStr
+  // get validTo(): Date | null {
+  //   if (!this.validToStr) return null;
+  //   return new Date(this.validToStr);
+  // }
 }

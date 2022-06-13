@@ -135,8 +135,8 @@ export class StationsResolver {
     monthAgo.setMonth(monthAgo.getMonth() - 2);
 
     const prices = await this.pricesRepo.find({
-      where: { stationId: station.id, validFrom: MoreThan(monthAgo) },
-      order: { validFrom: "DESC" },
+      where: { stationId: station.id, createdAt: MoreThan(monthAgo) },
+      order: { createdAt: "DESC" },
     });
 
     const groupped: Price[][] = [];
@@ -191,7 +191,7 @@ export class StationsResolver {
 
     let prices = await this.pricesRepo.find({
       where: { stationId: station.id, createdAt: MoreThan(monthAgo) },
-      order: { updatedAt: "DESC" },
+      order: { createdAt: "DESC" },
     });
 
     const distinctPrices: Price[] = [];

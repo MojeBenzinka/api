@@ -47,6 +47,11 @@ export class PriceResolver {
     return type;
   }
 
+  @ResolveField("validFrom")
+  async validFrom(@Parent() price: Price): Promise<Date> {
+    return new Date(price.validFromStr);
+  }
+
   @Mutation("updatePrice")
   async updatePrice(
     @Args("stationId") id: string,
@@ -61,7 +66,7 @@ export class PriceResolver {
     try {
       const latest = await this.pricesRepo.findOne({
         where: { stationId: id, petrolTypeId: typeId },
-        order: { validFrom: "DESC" },
+        order: { validFromStr: "DESC" },
       });
 
       if (latest && latest.price == price) {
@@ -76,7 +81,8 @@ export class PriceResolver {
         latest.updatedAt = new Date();
         // yesterday
         const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-        latest.validTo = new Date(yesterday);
+        // YYYY-MM-DD
+        latest.validToStr = new Date(yesterday).toISOString().split("T")[0];
         await this.pricesRepo.save(latest);
       }
 
@@ -85,7 +91,7 @@ export class PriceResolver {
       newPrice.petrolTypeId = typeId;
       newPrice.price = price;
       newPrice.updatedAt = now;
-      newPrice.validFrom = now;
+      newPrice.validFromStr = now.toISOString().split("T")[0];
       await this.pricesRepo.save(newPrice);
       return true;
     } catch (e) {
