@@ -75,7 +75,8 @@ export class PriceResolver {
       if (latest) {
         latest.updatedAt = new Date();
         // yesterday
-        latest.validTo = new Date(latest.validFrom);
+        const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        latest.validTo = new Date(yesterday);
         await this.pricesRepo.save(latest);
       }
 
