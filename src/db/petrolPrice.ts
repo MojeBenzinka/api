@@ -50,4 +50,10 @@ export class Price {
   })
   @JoinColumn([{ name: "petrol_type_id", referencedColumnName: "id" }])
   petrolType: PetrolType;
+
+  @Column("date", { name: "valid_from" })
+  validFrom: Date;
+
+  @Column("date", { name: "valid_to", nullable: true })
+  validTo?: Date;
 }

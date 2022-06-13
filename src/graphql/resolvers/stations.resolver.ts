@@ -135,8 +135,8 @@ export class StationsResolver {
     monthAgo.setMonth(monthAgo.getMonth() - 2);
 
     const prices = await this.pricesRepo.find({
-      where: { stationId: station.id, createdAt: MoreThan(monthAgo) },
-      order: { updatedAt: "DESC" },
+      where: { stationId: station.id, validFrom: MoreThan(monthAgo) },
+      order: { validFrom: "DESC" },
     });
 
     const groupped: Price[][] = [];
@@ -154,34 +154,29 @@ export class StationsResolver {
       groupped.push([price]);
     }
 
-    const today = new Date();
-    // set to 4 am
-    today.setHours(4);
-    today.setMinutes(0);
-    today.setSeconds(0);
-    today.setMilliseconds(0);
+    // const today = new Date();
 
-    for (const g of groupped) {
-      if (g.length === 0) continue;
+    // for (const g of groupped) {
+    //   if (g.length === 0) continue;
 
-      if (
-        !g.some(
-          (x) =>
-            this.isSameDate(x.createdAt, today) ||
-            this.isSameDate(x.updatedAt, today),
-        )
-      ) {
-        const latest = g.sort(
-          (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime(),
-        )[0];
-        g.push({
-          ...latest,
-          updatedAt: today,
-          createdAt: today,
-          id: uuidv4(),
-        });
-      }
-    }
+    //   if (
+    //     !g.some(
+    //       (x) =>
+    //         this.isSameDate(x.date, today) ||
+    //         this.isSameDate(x.updatedAt, today),
+    //     )
+    //   ) {
+    //     const latest = g.sort(
+    //       (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime(),
+    //     )[0];
+    //     g.push({
+    //       ...latest,
+    //       updatedAt: today,
+    //       createdAt: today,
+    //       id: uuidv4(),
+    //     });
+    //   }
+    // }
 
     return groupped;
   }

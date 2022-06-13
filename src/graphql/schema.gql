@@ -36,12 +36,14 @@ type Company {
 }
 
 type Price {
-  id: ID
+  id: ID!
   createdAt: Date!
   updatedAt: Date!
   currency: String!
   price: Float!
   type: PetrolType!
+  validFrom: Date!
+  validTo: Date
 }
 
 type PetrolType {

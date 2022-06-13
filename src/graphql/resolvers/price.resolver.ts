@@ -54,12 +54,14 @@ export class PriceResolver {
     @Args("price") price: number,
   ): Promise<boolean> {
     const now = new Date();
+    // set to noon
+
     // if already exist with updated_at
     // get latest
     try {
       const latest = await this.pricesRepo.findOne({
         where: { stationId: id, petrolTypeId: typeId },
-        order: { updatedAt: "DESC" },
+        order: { validFrom: "DESC" },
       });
 
       if (latest && latest.price == price) {
@@ -71,15 +73,9 @@ export class PriceResolver {
       }
 
       if (latest) {
-        // set updatedAt to yesterday at 23:59:59
-        latest.updatedAt = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() - 1,
-          23,
-          59,
-          59,
-        );
+        latest.updatedAt = new Date();
+        // yesterday
+        latest.validTo = new Date(latest.validFrom);
         await this.pricesRepo.save(latest);
       }
 
@@ -88,6 +84,7 @@ export class PriceResolver {
       newPrice.petrolTypeId = typeId;
       newPrice.price = price;
       newPrice.updatedAt = now;
+      newPrice.validFrom = now;
       await this.pricesRepo.save(newPrice);
       return true;
     } catch (e) {
