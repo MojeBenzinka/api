@@ -30,4 +30,9 @@ export class UtilsController {
   // async uploadFile() {
   //   return await this.utilsService.removeDuplicateStations();
   // }
+
+  @Post("checkPrices")
+  async priceCheck() {
+    return await this.utilsService.checkPrices();
+  }
 }

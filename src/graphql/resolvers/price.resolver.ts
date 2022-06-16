@@ -52,6 +52,45 @@ export class PriceResolver {
     return new Date(price.validFromStr);
   }
 
+  @Mutation("createPrice")
+  async createPrice(
+    @Args("stationId") id: string,
+    @Args("petrolTypeId") typeId: string,
+    @Args("price") price: number,
+  ): Promise<boolean> {
+    // existing?
+    const existing = await this.pricesRepo.findOne({
+      where: {
+        stationId: id,
+        petrolTypeId: typeId,
+      },
+    });
+
+    if (existing) {
+      this.logger.warn(
+        "Create price was called but price already exists - updating instead",
+      );
+      return await this.updatePrice(id, typeId, price);
+    }
+
+    const now = new Date();
+
+    const p = new Price();
+    p.stationId = id;
+    p.petrolTypeId = typeId;
+    p.price = price;
+    p.updatedAt = now;
+    p.createdAt = now;
+    p.validFromStr = now.toISOString().split("T")[0];
+    try {
+      await this.pricesRepo.save(p);
+      return true;
+    } catch (e) {
+      this.logger.error(e);
+    }
+    return false;
+  }
+
   @Mutation("updatePrice")
   async updatePrice(
     @Args("stationId") id: string,

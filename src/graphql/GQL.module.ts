@@ -29,6 +29,7 @@ import { DateScalar } from "./scalars/date.scalar";
     CompanyResolver,
     PriceResolver,
     PetrolTypeResolver,
+    PetrolTypeResolver,
     // Services
 
     // Scalars
