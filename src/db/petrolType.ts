@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { Price } from "./petrolPrice";
 import { PetrolSuperType } from "./petrolSuperType";
+import { StationPetrolRel } from "./stationPetrolRel";
 
 @Entity("petrol_types")
 export class PetrolType {
@@ -38,4 +39,7 @@ export class PetrolType {
   )
   @JoinColumn([{ name: "super_type_id", referencedColumnName: "id" }])
   superType: PetrolSuperType;
+
+  @OneToMany(() => StationPetrolRel, (price) => price.petrolType)
+  petrols: StationPetrolRel[];
 }

@@ -16,6 +16,10 @@ type Query {
 type Mutation {
   updatePrice(stationId: ID!, petrolTypeId: ID!, price: Float!): Boolean!
   createPrice(stationId: ID!, petrolTypeId: ID!, price: Float!): Boolean!
+
+  # --
+  addPetrolToCompany(companyId: ID!, petrolTypeId: ID!): Boolean!
+  removePetrolFromCompany(companyId: ID!, petrolTypeId: ID!): Boolean!
 }
 
 type Station {
@@ -34,6 +38,7 @@ type Company {
   logo_img: String!
   imgUrl: String!
   stations: [Station!]
+  availablePetrols: [PetrolType!]
 }
 
 type Price {

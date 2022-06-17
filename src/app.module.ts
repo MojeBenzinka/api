@@ -13,6 +13,7 @@ import { PetrolType } from "./db/petrolType";
 import { ApolloServerPluginCacheControl } from "apollo-server-core/dist/plugin/cacheControl";
 import responseCachePlugin from "apollo-server-plugin-response-cache";
 import { UtilsModule } from "./utils/utils.module";
+import { StationPetrolRel } from "./db/stationPetrolRel";
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { UtilsModule } from "./utils/utils.module";
         PetrolStation,
         Price,
         PetrolType,
+        StationPetrolRel,
       ],
       //synchronize: true,
     }),

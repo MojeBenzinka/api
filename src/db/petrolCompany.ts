@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { PetrolStation } from "./petrolStation";
+import { StationPetrolRel } from "./stationPetrolRel";
 
 @Entity("petrol_companies")
 export class PetrolCompany {
@@ -23,4 +24,7 @@ export class PetrolCompany {
 
   @OneToMany(() => PetrolStation, (station) => station.companyId)
   stations: PetrolStation[];
+
+  @OneToMany(() => StationPetrolRel, (price) => price.company)
+  petrols: StationPetrolRel[];
 }
