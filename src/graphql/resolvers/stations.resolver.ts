@@ -57,6 +57,26 @@ export class StationsResolver {
     return [latMin, latMax, lonMin, lonMax];
   }
 
+  private sortPrices(prices: Price[]): Price[] {
+    return prices.sort((a, b) => {
+      const aName = a.petrolType.name;
+      const bName = b.petrolType.name;
+
+      const aCategory = a.petrolType.superType.cat;
+      const bCategory = b.petrolType.superType.cat;
+
+      if (aCategory == bCategory) {
+        if (aName < bName) {
+          return -1;
+        }
+        if (aName > bName) {
+          return 1;
+        }
+      }
+      return aCategory > bCategory ? 1 : -1;
+    });
+  }
+
   @ResolveField("company")
   async place(@Parent() station: PetrolStation) {
     const cId = station.companyId;
@@ -136,6 +156,7 @@ export class StationsResolver {
 
     const prices = await this.pricesRepo.find({
       where: { stationId: station.id, createdAt: MoreThan(monthAgo) },
+
       order: { createdAt: "DESC" },
     });
 
@@ -178,6 +199,8 @@ export class StationsResolver {
     //   }
     // }
 
+    // const sorted = groupped.map((x) => this.sortPrices(x));
+
     return groupped;
   }
 
@@ -191,8 +214,25 @@ export class StationsResolver {
 
     let prices = await this.pricesRepo.find({
       where: { stationId: station.id, createdAt: MoreThan(monthAgo) },
-      order: { createdAt: "DESC" },
+      relations: ["petrolType", "petrolType.superType"],
+      order: {
+        createdAt: "DESC",
+        // petrolType: { superType: { cat: "ASC", name: "ASC" } },
+      },
     });
+
+    // const res = await this.pricesRepo
+    //   .createQueryBuilder("price")
+    //   .select("*")
+    //   .leftJoin("price.petrolType", "petrolType")
+    //   .leftJoin("petrolType.superType", "superType")
+    //   .orderBy("created_at", "DESC")
+    //   .addOrderBy("cat", "ASC")
+    //   .addOrderBy("superType.name", "ASC")
+    //   .addOrderBy("petrolType.name", "ASC")
+    //   .getSql();
+
+    // console.log(res);
 
     const distinctPrices: Price[] = [];
 
@@ -205,6 +245,18 @@ export class StationsResolver {
       prices = prices.filter((x) => x.petrolTypeId != price.petrolTypeId);
     }
 
-    return distinctPrices;
+    const gasDiesel = distinctPrices.filter(
+      (x) =>
+        x.petrolType.superType.cat === "gas" ||
+        x.petrolType.superType.cat === "diesel",
+    );
+
+    const rest = distinctPrices.filter(
+      (x) =>
+        x.petrolType.superType.cat !== "gas" &&
+        x.petrolType.superType.cat !== "diesel",
+    );
+
+    return [...this.sortPrices(gasDiesel), ...this.sortPrices(rest)];
   }
 }
