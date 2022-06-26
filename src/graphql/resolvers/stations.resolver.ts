@@ -7,6 +7,7 @@ import { PetrolStation } from "src/db/petrolStation";
 import { PetrolType } from "src/db/petrolType";
 import { EntityManager, Repository, MoreThan, In, Between } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
 
 @Resolver("Station")
 export class StationsResolver {
@@ -162,7 +163,14 @@ export class StationsResolver {
 
     const groupped: Price[][] = [];
 
-    for (const price of prices) {
+    const today = moment().format("YYYY-MM-DD");
+
+    const p = prices.filter((x) => !x.validToStr);
+    for (const p2 of p) {
+      p2.validToStr = today;
+    }
+
+    for (const price of p) {
       const existing = groupped.find((x) =>
         x.some((y) => y.petrolTypeId == price.petrolTypeId),
       );
