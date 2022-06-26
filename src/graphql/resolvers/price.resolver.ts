@@ -8,6 +8,7 @@ import {
   Resolver,
 } from "@nestjs/graphql";
 import { InjectEntityManager, InjectRepository } from "@nestjs/typeorm";
+import * as moment from "moment";
 import { PetrolCompany } from "src/db/petrolCompany";
 import { Price } from "src/db/petrolPrice";
 import { PetrolStation } from "src/db/petrolStation";
@@ -50,6 +51,14 @@ export class PriceResolver {
   @ResolveField("validFrom")
   async validFrom(@Parent() price: Price): Promise<Date> {
     return new Date(price.validFromStr);
+  }
+
+  @ResolveField("validTo")
+  async validTo(@Parent() price: Price): Promise<Date> {
+    if (price.validToStr) return new Date(price.validToStr);
+
+    const today = moment().format("YYYY-MM-DD");
+    return new Date(today);
   }
 
   @Mutation("createPrice")

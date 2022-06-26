@@ -30,8 +30,6 @@ export class UtilsService {
       },
     });
 
-    console.log(prices);
-
     const pricesWithoutEnd = prices.filter((p) => !p.validToStr);
 
     // foreach find whethers theres a newer price

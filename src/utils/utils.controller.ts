@@ -31,8 +31,8 @@ export class UtilsController {
   //   return await this.utilsService.removeDuplicateStations();
   // }
 
-  @Post("checkPrices")
-  async priceCheck() {
-    return await this.utilsService.checkPrices();
-  }
+  // @Post("checkPrices")
+  // async priceCheck() {
+  //   return await this.utilsService.checkPrices();
+  // }
 }
