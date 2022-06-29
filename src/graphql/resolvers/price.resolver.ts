@@ -48,17 +48,9 @@ export class PriceResolver {
     return type;
   }
 
-  @ResolveField("validFrom")
+  @ResolveField("date")
   async validFrom(@Parent() price: Price): Promise<Date> {
-    return new Date(price.validFromStr);
-  }
-
-  @ResolveField("validTo")
-  async validTo(@Parent() price: Price): Promise<Date> {
-    if (price.validToStr) return new Date(price.validToStr);
-
-    const today = moment().format("YYYY-MM-DD");
-    return new Date(today);
+    return new Date(price.dateStr);
   }
 
   @Mutation("createPrice")
@@ -90,7 +82,7 @@ export class PriceResolver {
     p.price = price;
     p.updatedAt = now;
     p.createdAt = now;
-    p.validFromStr = now.toISOString().split("T")[0];
+    p.dateStr = now.toISOString().split("T")[0];
     try {
       await this.pricesRepo.save(p);
       return true;
@@ -114,7 +106,7 @@ export class PriceResolver {
     try {
       const latest = await this.pricesRepo.findOne({
         where: { stationId: id, petrolTypeId: typeId },
-        order: { validFromStr: "DESC" },
+        order: { dateStr: "DESC" },
       });
 
       if (latest && latest.price == price) {
@@ -126,14 +118,12 @@ export class PriceResolver {
         return true;
       }
 
-      if (latest) {
-        latest.updatedAt = new Date();
-        // const yesterday = new Date();
-        // yesterday
-        // const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-        // YYYY-MM-DD
-        latest.validToStr = new Date().toISOString().split("T")[0];
+      if (latest && this.isSameDay(new Date(latest.dateStr), now)) {
+        latest.updatedAt = now;
+        latest.price = price;
+
         await this.pricesRepo.save(latest);
+        return true;
       }
 
       const newPrice = new Price();
@@ -141,7 +131,7 @@ export class PriceResolver {
       newPrice.petrolTypeId = typeId;
       newPrice.price = price;
       newPrice.updatedAt = now;
-      newPrice.validFromStr = now.toISOString().split("T")[0];
+      newPrice.dateStr = now.toISOString().split("T")[0];
       await this.pricesRepo.save(newPrice);
       return true;
     } catch (e) {

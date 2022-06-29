@@ -19,53 +19,53 @@ export class UtilsService {
     private readonly pricesRepo: Repository<Price>,
   ) {}
 
-  async checkPrices() {
-    // for last 2 months
-    const startDate = new Date();
-    startDate.setMonth(startDate.getMonth() - 2);
+  // async checkPrices() {
+  //   // for last 2 months
+  //   const startDate = new Date();
+  //   startDate.setMonth(startDate.getMonth() - 2);
 
-    const prices = await this.pricesRepo.find({
-      where: {
-        createdAt: MoreThanOrEqual(startDate),
-      },
-    });
+  //   const prices = await this.pricesRepo.find({
+  //     where: {
+  //       createdAt: MoreThanOrEqual(startDate),
+  //     },
+  //   });
 
-    const pricesWithoutEnd = prices.filter((p) => !p.validToStr);
+  //   const pricesWithoutEnd = prices.filter((p) => !p.dateStr);
 
-    // foreach find whethers theres a newer price
-    for (const price of pricesWithoutEnd) {
-      const isNewer = prices.filter(
-        (p) =>
-          p.petrolTypeId == price.petrolTypeId &&
-          p.stationId == price.stationId &&
-          p.price != price.price &&
-          new Date(p.validFromStr).getTime() >
-            new Date(price.validFromStr).getTime(),
-      );
+  //   // foreach find whethers theres a newer price
+  //   for (const price of pricesWithoutEnd) {
+  //     const isNewer = prices.filter(
+  //       (p) =>
+  //         p.petrolTypeId == price.petrolTypeId &&
+  //         p.stationId == price.stationId &&
+  //         p.price != price.price &&
+  //         new Date(p.validFromStr).getTime() >
+  //           new Date(price.validFromStr).getTime(),
+  //     );
 
-      if (!isNewer) {
-        return;
-      }
+  //     if (!isNewer) {
+  //       return;
+  //     }
 
-      // if theres newer, set validToStr
-      // order by createdAt
-      const newer = isNewer.sort((a, b) => {
-        return (
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
-      })[0];
+  //     // if theres newer, set validToStr
+  //     // order by createdAt
+  //     const newer = isNewer.sort((a, b) => {
+  //       return (
+  //         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  //       );
+  //     })[0];
 
-      if (!newer) continue;
+  //     if (!newer) continue;
 
-      const newDate = new Date(newer.validFromStr);
-      // - 1day
-      newDate.setDate(newDate.getDate() - 1);
-      // YYYY-MM-DD
-      price.validToStr = newDate.toISOString().split("T")[0];
-      await this.pricesRepo.save(price);
-    }
-    this.logger.log("checkPrices done");
-  }
+  //     const newDate = new Date(newer.validFromStr);
+  //     // - 1day
+  //     newDate.setDate(newDate.getDate() - 1);
+  //     // YYYY-MM-DD
+  //     price.dateStr = newDate.toISOString().split("T")[0];
+  //     await this.pricesRepo.save(price);
+  //   }
+  //   this.logger.log("checkPrices done");
+  // }
 
   private calculateDistance(
     lat1: number,

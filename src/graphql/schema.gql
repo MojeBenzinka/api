@@ -59,8 +59,7 @@ type Price {
   currency: String!
   price: Float!
   type: PetrolType!
-  validFrom: Date!
-  validTo: Date
+  date: Date!
 }
 
 type PetrolType {

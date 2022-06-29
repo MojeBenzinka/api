@@ -7,7 +7,6 @@ import { PetrolCompany } from "./db/petrolCompany";
 import { PetrolStation } from "./db/petrolStation";
 import { PetrolSuperType } from "./db/petrolSuperType";
 import { GQLModule } from "./graphql/GQL.module";
-import { OcrModule } from "./images/ocr.module";
 import { Price } from "./db/petrolPrice";
 import { PetrolType } from "./db/petrolType";
 import { ApolloServerPluginCacheControl } from "apollo-server-core/dist/plugin/cacheControl";
@@ -22,15 +21,15 @@ import { StationPetrolRel } from "./db/stationPetrolRel";
       type: "postgres",
       retryAttempts: 50,
       retryDelay: 5000,
-      ssl: {
-        rejectUnauthorized: false,
-      },
-      url: process.env.DATABASE_URL,
-      // host: process.env.DATABASE_HOST,
-      // port: 5432,
-      // username: process.env.DATABASE_USER,
-      // password: process.env.DATABASE_PASSWORD,
-      // database: process.env.DATABASE_NAME,
+      // ssl: {
+      //   rejectUnauthorized: false,
+      // },
+      // url: process.env.DATABASE_URL,
+      host: process.env.DATABASE_HOST,
+      port: 5432,
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
       entities: [
         PetrolCompany,
         PetrolSuperType,

@@ -157,7 +157,7 @@ export class StationsResolver {
     const prices = await this.pricesRepo.find({
       where: { stationId: station.id, createdAt: MoreThan(monthAgo) },
 
-      order: { validFromStr: "DESC" },
+      order: { dateStr: "DESC" },
     });
 
     const groupped: Price[][] = [];
@@ -216,7 +216,7 @@ export class StationsResolver {
       where: { stationId: station.id, createdAt: MoreThan(monthAgo) },
       relations: ["petrolType", "petrolType.superType"],
       order: {
-        createdAt: "DESC",
+        dateStr: "DESC",
         // petrolType: { superType: { cat: "ASC", name: "ASC" } },
       },
     });

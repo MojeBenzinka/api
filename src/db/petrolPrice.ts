@@ -1,18 +1,11 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
-  Index,
   JoinColumn,
   ManyToOne,
-  OneToMany,
-  OneToOne,
-  UpdateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { PetrolCompany } from "./petrolCompany";
 import { PetrolStation } from "./petrolStation";
-import { PetrolSuperType } from "./petrolSuperType";
 import { PetrolType } from "./petrolType";
 
 @Entity("prices")
@@ -55,11 +48,11 @@ export class Price {
   @JoinColumn([{ name: "petrol_type_id", referencedColumnName: "id" }])
   petrolType: PetrolType;
 
-  @Column("date", { name: "valid_from" })
-  validFromStr: string;
+  // @Column("date", { name: "valid_from" })
+  // validFromStr: string;
 
-  @Column("date", { name: "valid_to", nullable: true })
-  validToStr?: string;
+  @Column("date", { name: "date", nullable: true })
+  dateStr?: string;
 
   // // getter validFrom
   // get validFrom(): Date {
