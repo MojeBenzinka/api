@@ -119,7 +119,8 @@ export class PriceResolver {
 
       if (latest && latest.price == price) {
         // update
-        latest.price = price;
+
+        // latest.price = price;
         latest.updatedAt = now;
         await this.pricesRepo.save(latest);
         return true;
@@ -127,10 +128,11 @@ export class PriceResolver {
 
       if (latest) {
         latest.updatedAt = new Date();
+        // const yesterday = new Date();
         // yesterday
-        const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        // const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
         // YYYY-MM-DD
-        latest.validToStr = new Date(yesterday).toISOString().split("T")[0];
+        latest.validToStr = new Date().toISOString().split("T")[0];
         await this.pricesRepo.save(latest);
       }
 

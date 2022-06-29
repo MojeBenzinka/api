@@ -10,6 +10,7 @@ import { StationPetrolRel } from "src/db/stationPetrolRel";
 import { CompanyResolver } from "./resolvers/company.resolver";
 import { PetrolTypeResolver } from "./resolvers/petrolType.resolver";
 import { PriceResolver } from "./resolvers/price.resolver";
+import { SearchResolver } from "./resolvers/search.resolver";
 import { StationsResolver } from "./resolvers/stations.resolver";
 import { DateScalar } from "./scalars/date.scalar";
 
@@ -32,6 +33,7 @@ import { DateScalar } from "./scalars/date.scalar";
     PriceResolver,
     PetrolTypeResolver,
     PetrolTypeResolver,
+    SearchResolver,
     // Services
 
     // Scalars

@@ -11,6 +11,7 @@ type Query {
   station(id: ID!): Station!
   companies: [Company!]
   petrolTypes: [PetrolType!]
+  search(query: String!): [SearchResult!]
 }
 
 type Mutation {
@@ -20,6 +21,16 @@ type Mutation {
   # --
   addPetrolToCompany(companyId: ID!, petrolTypeId: ID!): Boolean!
   removePetrolFromCompany(companyId: ID!, petrolTypeId: ID!): Boolean!
+}
+
+type SearchResult {
+  place_id: ID!
+  boundingbox: [String!]
+  lat: Float!
+  lon: Float!
+  display_name: String!
+  class: String!
+  type: String!
 }
 
 type Station {

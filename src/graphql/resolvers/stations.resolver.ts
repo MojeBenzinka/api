@@ -157,7 +157,7 @@ export class StationsResolver {
     const prices = await this.pricesRepo.find({
       where: { stationId: station.id, createdAt: MoreThan(monthAgo) },
 
-      order: { createdAt: "DESC" },
+      order: { validFromStr: "DESC" },
     });
 
     const groupped: Price[][] = [];
