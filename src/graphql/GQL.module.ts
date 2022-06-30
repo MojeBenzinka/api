@@ -7,6 +7,7 @@ import { PetrolStation } from "src/db/petrolStation";
 import { PetrolSuperType } from "src/db/petrolSuperType";
 import { PetrolType } from "src/db/petrolType";
 import { StationPetrolRel } from "src/db/stationPetrolRel";
+import { CoiProblemresolver } from "./resolvers/coiProblem.resolver";
 import { CompanyResolver } from "./resolvers/company.resolver";
 import { PetrolTypeResolver } from "./resolvers/petrolType.resolver";
 import { PriceResolver } from "./resolvers/price.resolver";
@@ -34,6 +35,7 @@ import { DateScalar } from "./scalars/date.scalar";
     PetrolTypeResolver,
     PetrolTypeResolver,
     SearchResolver,
+    CoiProblemresolver,
     // Services
 
     // Scalars
