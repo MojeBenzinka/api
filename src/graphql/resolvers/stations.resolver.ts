@@ -6,7 +6,6 @@ import { Price } from "src/db/petrolPrice";
 import { PetrolStation } from "src/db/petrolStation";
 import { PetrolType } from "src/db/petrolType";
 import { EntityManager, Repository, MoreThan, In, Between } from "typeorm";
-import { v4 as uuidv4 } from "uuid";
 
 @Resolver("Station")
 export class StationsResolver {

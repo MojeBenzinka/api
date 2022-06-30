@@ -97,8 +97,10 @@ export class PriceResolver {
     @Args("stationId") id: string,
     @Args("petrolTypeId") typeId: string,
     @Args("price") price: number,
+    @Args("date") date?: Date,
   ): Promise<boolean> {
     const now = new Date();
+
     // set to noon
 
     // if already exist with updated_at

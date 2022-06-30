@@ -8,10 +8,12 @@ import {
   Resolver,
 } from "@nestjs/graphql";
 import { InjectEntityManager, InjectRepository } from "@nestjs/typeorm";
+import axios from "axios";
 import { PetrolCompany } from "src/db/petrolCompany";
 import { PetrolStation } from "src/db/petrolStation";
 import { PetrolType } from "src/db/petrolType";
 import { StationPetrolRel } from "src/db/stationPetrolRel";
+import { ICoiProblem } from "src/types/coi-problem";
 import { EntityManager, Repository } from "typeorm";
 
 @Resolver("Company")
@@ -86,6 +88,19 @@ export class CompanyResolver {
       this.logger.error(e);
       return false;
     }
+  }
+
+  @ResolveField("coiProblems")
+  async coiProblems(@Parent() company: PetrolCompany): Promise<ICoiProblem[]> {
+    const res = await axios.get<ICoiProblem[]>(
+      `https://drupal.kdenatankuju.cz/api/cois/${company.id}`,
+    );
+
+    if (res.status === 200) {
+      return res.data ?? [];
+    }
+
+    return [];
   }
 
   @Mutation("removePetrolFromCompany")

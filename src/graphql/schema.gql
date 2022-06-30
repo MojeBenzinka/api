@@ -15,8 +15,18 @@ type Query {
 }
 
 type Mutation {
-  updatePrice(stationId: ID!, petrolTypeId: ID!, price: Float!): Boolean!
-  createPrice(stationId: ID!, petrolTypeId: ID!, price: Float!): Boolean!
+  updatePrice(
+    stationId: ID!
+    petrolTypeId: ID!
+    price: Float!
+    date: Date
+  ): Boolean!
+  createPrice(
+    stationId: ID!
+    petrolTypeId: ID!
+    price: Float!
+    date: Date
+  ): Boolean!
 
   # --
   addPetrolToCompany(companyId: ID!, petrolTypeId: ID!): Boolean!
@@ -50,6 +60,23 @@ type Company {
   imgUrl: String!
   stations: [Station!]
   availablePetrols: [PetrolType!]
+  coiProblems: [CoiProblem!]
+}
+
+type CoiProblem {
+  nid: ID!
+  title: String!
+  field_company_id: String!
+  field_currency: String!
+  field_datum: Date!
+  field_inspektorat: String!
+  field_link_na_rozhodnuti: String!
+  field_ph: String!
+  field_pokuta: String!
+  field_rozhodnuti_pdf: String!
+  field_station_id: String!
+  field_summary: String!
+  field_summary_1: String!
 }
 
 type Price {
