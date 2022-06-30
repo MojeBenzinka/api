@@ -46,6 +46,10 @@ import { StationPetrolRel } from "./db/stationPetrolRel";
       debug: false,
       typePaths: ["./**/*.gql"],
 
+      cors: {
+        origin: "*",
+      },
+
       // definitions: {
       //   path: join(process.cwd(), "src/graphql/graphql.ts"),
       // },
