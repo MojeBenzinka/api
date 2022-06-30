@@ -92,12 +92,16 @@ export class CompanyResolver {
 
   @ResolveField("coiProblems")
   async coiProblems(@Parent() company: PetrolCompany): Promise<ICoiProblem[]> {
-    const res = await axios.get<ICoiProblem[]>(
-      `https://drupal.kdenatankuju.cz/api/cois/${company.id}`,
-    );
+    try {
+      const res = await axios.get<ICoiProblem[]>(
+        `https://drupal.kdenatankuju.cz/api/cois/${company.id}`,
+      );
 
-    if (res.status === 200) {
-      return res.data ?? [];
+      if (res.status === 200) {
+        return res.data ?? [];
+      }
+    } catch (e) {
+      this.logger.error(e);
     }
 
     return [];
