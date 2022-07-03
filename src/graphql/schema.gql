@@ -12,6 +12,7 @@ type Query {
   companies: [Company!]
   petrolTypes: [PetrolType!]
   search(query: String!): [SearchResult!]
+  coiProblems(maxDate: Date): [COIProblem!]
 }
 
 type Mutation {
