@@ -1817,7 +1817,7 @@ apollo-server-errors@^3.3.1:
   resolved "https://registry.yarnpkg.com/apollo-server-errors/-/apollo-server-errors-3.3.1.tgz#ba5c00cdaa33d4cbd09779f8cb6f47475d1cd655"
   integrity sha512-xnZJ5QWs6FixHICXHxUfm+ZWqqxrNuPlQ+kj5m6RtEgIpekOPssH/SD9gf2B4HuWV0QozorrygwZnux8POvyPA==
 
-apollo-server-express@^3.8.1:
+apollo-server-express@3.8.1:
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/apollo-server-express/-/apollo-server-express-3.8.1.tgz#79a979c60a6e6d49ae5396c13aeb467389831500"
   integrity sha512-58QJFFbLoBfQ3SOp+0PHOqJWVxHf2WzjB3DU2MlVxHi/CfrDbjf7EYjuWTtuvIuzuoEG6kAWLGn2zEDlLmXk1A==
@@ -1841,7 +1841,7 @@ apollo-server-plugin-base@^3.6.0:
   dependencies:
     apollo-server-types "^3.6.0"
 
-apollo-server-plugin-response-cache@^3.6.0:
+apollo-server-plugin-response-cache@3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/apollo-server-plugin-response-cache/-/apollo-server-plugin-response-cache-3.6.0.tgz#dbe97d20adf64e97159f62827ba01159eea8e317"
   integrity sha512-rpoTR69BJ//e/QrwKZMJ3ElnYu9DqmN74r/eCa99Hc/IXnx7DmO0kT+n5A6TjyFrE00899Doe7z4htyRSoHN3Q==
