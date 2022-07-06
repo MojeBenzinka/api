@@ -35,4 +35,7 @@ export class PetrolStation {
 
   @OneToMany(() => Price, (price) => price.stationId)
   prices: Price[];
+
+  @Column({ type: "text" })
+  region: string;
 }

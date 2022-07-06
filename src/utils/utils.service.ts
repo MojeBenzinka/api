@@ -6,8 +6,9 @@ import {
 import { InjectRepository } from "@nestjs/typeorm";
 import { PetrolStation } from "src/db/petrolStation";
 import { MoreThanOrEqual, Repository } from "typeorm";
-import { getDistance } from "geolib";
+import { getDistance, isPointInPolygon } from "geolib";
 import { Price } from "src/db/petrolPrice";
+import { regionGps } from "../data/regions";
 
 @Injectable()
 export class UtilsService {
@@ -117,5 +118,35 @@ export class UtilsService {
     this.logger.log(`removing ${toRemove.length} duplicate stations`);
 
     await this.stationsRepo.remove(toRemove);
+  }
+
+  async assignRegion() {
+    try {
+      const stationsWithoutRegion = await this.stationsRepo.find({
+        where: { region: null },
+      });
+
+      const polygon = regionGps.map((x) => ({
+        latitude: x[0],
+        longitude: x[1],
+      }));
+
+      const updated: PetrolStation[] = [];
+
+      for (const s of stationsWithoutRegion) {
+        const res = isPointInPolygon(
+          { latitude: s.lat, longitude: s.lon },
+          polygon,
+        );
+
+        if (res) {
+          s.region = "CZ-51";
+          updated.push(s);
+        }
+      }
+      await this.stationsRepo.save(updated);
+    } catch (e) {
+      this.logger.error(e);
+    }
   }
 }

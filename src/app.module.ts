@@ -60,8 +60,8 @@ import { StationPetrolRel } from "./db/stationPetrolRel";
       //   "graphql-ws": true,
       // },
       plugins: [
-        ApolloServerPluginCacheControl({ defaultMaxAge: 5 }), // optional
-        responseCachePlugin(),
+        // ApolloServerPluginCacheControl({ defaultMaxAge: 5 }), // optional
+        // responseCachePlugin(),
       ],
     }),
     GQLModule,

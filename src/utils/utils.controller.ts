@@ -35,4 +35,9 @@ export class UtilsController {
   // async priceCheck() {
   //   return await this.utilsService.checkPrices();
   // }
+
+  // @Post("assignRegions")
+  // async assignRegions() {
+  //   return await this.utilsService.assignRegion();
+  // }
 }
